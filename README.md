@@ -13,6 +13,8 @@ Pairs well with scripts that automatically detect and morph URLs from these site
 
 ## Screenshot
 
+(renders behind backtotop button, if you have one, for compatibility)
+
 ![alt text](https://i.snag.gy/YEbn32.jpg)
 
 ![alt text](https://i.snag.gy/wDr1xp.jpg)
