@@ -1,0 +1,31 @@
+{
+	"name": "toxyy/stickyad",
+	"type": "phpbb-extension",
+	"description": "",
+	"homepage": "https://github.com/toxyy/stickyad",
+	"version": "1.0.0",
+	"time": "2019-05-04",
+	"keywords": ["phpbb", "extension"],
+	"license": "GPL-2.0",
+	"authors": [{
+			"name": "toxyy",
+			"email": "thrashtek@yahoo.com",
+			"homepage": "https://github.com/toxyy/",
+			"role": "Developer"
+		}],
+	"require": {
+		"php": ">=7"
+	},
+	"extra": {
+		"display-name": "Sticky Ad",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.2"
+		},
+		"version-check": {
+			"host": "toxyy.github.io",
+			"directory": "/version",
+			"filename": "stickyad.json",
+                        "ssl": 1
+		}
+	}
+}

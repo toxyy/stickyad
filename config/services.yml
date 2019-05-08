@@ -1,0 +1,11 @@
+services:
+    toxyy.stickyad.listener:
+        class: toxyy\stickyad\event\listener
+        arguments:
+            - '@cache'
+            - '@config'
+            - '@template'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
