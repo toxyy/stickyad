@@ -1,6 +1,6 @@
 # PhpBB Extension - toxyy Sticky Ad v1.0.0
 
-[Topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?f=456&t=)
+[Topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?f=456&t=2511156)
 
 ## Requirements
 
@@ -12,6 +12,12 @@ Adds a sticky ad on the bottom right (desktop) or bottom (mobile) of topic pages
 Pairs well with scripts that automatically detect and morph URLs from these sites so you can boost your ad revenue.
 
 ## Screenshot
+
+![alt text](https://i.snag.gy/YEbn32.jpg)
+
+![alt text](https://i.snag.gy/wDr1xp.jpg)
+
+![alt text](https://i.snag.gy/KpCmIY.jpg)
 
 ## Quick Install
 
