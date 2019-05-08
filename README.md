@@ -8,7 +8,8 @@ phpBB 3.2.5-RC1+ PHP 7+
 
 ## Features
 
-Adds config option in `Board Features` for showing user forum and topic activity on user profiles
+Adds a sticky ad on the bottom right (desktop) or bottom (mobile) of topic pages that an ebay/amazon/alibaba link is detected.
+Pairs well with scripts that automatically detect and morph URLs from these sites so you can boost your ad revenue.
 
 ## Screenshot
 
