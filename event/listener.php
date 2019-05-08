@@ -33,7 +33,7 @@ class listener implements EventSubscriberInterface
     /** @var string phpEx */
     protected $php_ext;
 
-	/**
+    /**
      * Constructor
      */
     public function __construct(\phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\template\template $template, $phpbb_root_path, $php_ext)
@@ -45,21 +45,21 @@ class listener implements EventSubscriberInterface
         $this->php_ext                            = $php_ext;
     }
 
-	static public function getSubscribedEvents()
-	{
-		return [
-			'core.viewtopic_modify_post_data'     => 'viewtopic_modify_post_data',
-		];
-	}
+    static public function getSubscribedEvents()
+    {
+        return [
+            'core.viewtopic_modify_post_data'     => 'viewtopic_modify_post_data',
+        ];
+    }
 
-	/*
-	 * parse all posts on a page for ebay/amazon/alibaba links
-	 * if any are found, check if its data is cached, if not get a trimmed mobile version of the listing and cache that data
-	 * add some template variables for the html event
-	 */
-	public function viewtopic_modify_post_data($event)
-	{
-		$post_ary = array_column($event['rowset'], 'post_text');
+    /*
+     * parse all posts on a page for ebay/amazon/alibaba links
+     * if any are found, check if its data is cached, if not get a trimmed mobile version of the listing and cache that data
+     * add some template variables for the html event
+     */
+    public function viewtopic_modify_post_data($event)
+    {
+        $post_ary = array_column($event['rowset'], 'post_text');
 
         $ad_url = $ad_id = $title = $price = $img_src = $seller = $seller_feedback = $extra = '';
         $ad_type = 'adsense';
@@ -208,5 +208,5 @@ class listener implements EventSubscriberInterface
             'STICKYAD_FEEDBACK'     => $ad_data['seller_feedback'],
             'STICKYAD_EXTRA'        => $ad_data['extra'],
         ]);
-	}
+    }
 }
