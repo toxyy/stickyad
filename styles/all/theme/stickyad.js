@@ -3,16 +3,16 @@ head.ready(function () {
     $('a.toxyyshowhidelink').click(function(e) {
         if($(e.target).closest('.childDiv').length==0 ) {
             if(collapsed) {
-                $('a.toxyyadcollapsed').removeClass('toxyyadcollapsed');
-                $('a.toxyyadflipbutton').removeClass('toxyyadflipbutton');
-                $('div.toxyyzeroheight').removeClass('toxyyzeroheight');
-                $('a.toxyystickyurl').addClass('toxyyadshow');
+                $('.toxyyadcollapsed').removeClass('toxyyadcollapsed');
+                $('.toxyyadflipbutton').removeClass('toxyyadflipbutton');
+                $('.toxyyzeroheight').removeClass('toxyyzeroheight');
+                $('.toxyystickyurl').addClass('toxyyadshow');
                 collapsed = false;
             } else {
-                $('a.toxyyadshow').removeClass('toxyyadshow');
-                $('a.toxyystickyurl').addClass('toxyyadcollapsed');
-                $('a.toxyyshowhidelink').addClass('toxyyadflipbutton');
-                $('div#toxyystickyadbox').addClass('toxyyzeroheight');
+                $('.toxyyadshow').removeClass('toxyyadshow');
+                $('.toxyystickyurl').addClass('toxyyadcollapsed');
+                $('.toxyyshowhidelink').addClass('toxyyadflipbutton');
+                $('#toxyystickyadbox').addClass('toxyyzeroheight');
                 collapsed = true;
             }
         }

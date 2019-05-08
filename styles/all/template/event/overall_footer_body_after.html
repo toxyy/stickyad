@@ -6,27 +6,31 @@
     <label for="toxyystickyshowhide" id="toxyystickylabel" class="toxyystickyshowhidelink" style="font-weight: 900;">
         <a class="toxyyshowhidelink"></a>
     </label>
-    <a href="{{ STICKYAD_URL }}" class="toxyystickyurl" target="_blank" title="">
-        <div id="toxyystickyadbox">
-            <span class="toxyyadmarker">Ad</span>
-            <img src="{{ STICKYAD_IMG_SRC }}" />
-            <div id="toxyystickyaddata" class="content">
-                <div class="toxyystickyadtitle toxyystickyadlarge">
-                    {{ STICKYAD_TITLE }}
+    <{% if STICKYAD_URL %}a href="{{ STICKYAD_URL }}" class="toxyystickyurl" target="_blank" title=""{% else %}div{% endif %} class="toxyystickyurl">
+        {% if STICKYAD_URL %}
+            <div id="toxyystickyadbox">
+                <span class="toxyyadmarker">Ad</span>
+                <img src="{{ STICKYAD_IMG_SRC }}" />
+                <div id="toxyystickyaddata" class="content">
+                    <div class="toxyystickyadtitle toxyystickyadlarge">
+                        {{ STICKYAD_TITLE }}
+                    </div>
+                    <div class="toxyystickyadprice toxyystickyadlarge toxyystickyadgrey">
+                        {{ STICKYAD_PRICE }}
+                    </div>
+                    {% if STICKYAD_EXTRA %}<div class="toxyystickyadextra toxyystickyadgrey">
+                        {{ STICKYAD_EXTRA }}</div>
+                    {% endif %}
+                    <div class="toxyystickyadsmall">
+                        sold by {{ STICKYAD_SELLER }}</br>
+                        {{ STICKYAD_FEEDBACK }}
+                    </div>
                 </div>
-                <div class="toxyystickyadprice toxyystickyadlarge toxyystickyadgrey">
-                    {{ STICKYAD_PRICE }}
-                </div>
-                {% if STICKYAD_EXTRA %}<div class="toxyystickyadextra toxyystickyadgrey">
-                    {{ STICKYAD_EXTRA }}</div>
-                {% endif %}
-                <div class="toxyystickyadsmall">
-                    sold by {{ STICKYAD_SELLER }}</br>
-                    {{ STICKYAD_FEEDBACK }}
-                </div>
+                <img class="toxyyadtype" src="./ext/toxyy/stickyad/images/{{ STICKYAD_TYPE }}.png" />
             </div>
-            <img class="toxyyadtype" src="./ext/toxyy/stickyad/images/{{ STICKYAD_TYPE }}.png" />
-        </div>
-    </a>
+        {% else %}
+            <!-- Add adsense code after this comment -->
+        {% endif %}
+    {% if STICKYAD_URL %}</a>{% else %}</div>{% endif %}
 </div>
 {% endif %}

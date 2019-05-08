@@ -197,7 +197,7 @@ class listener implements EventSubscriberInterface
         }
         $this->template->assign_vars([
             'STICKYAD_SHOW'         => $show_ad,
-            'STICKYAD_JAVASCRIPT'   => true,
+            'STICKYAD_JAVASCRIPT'   => false,
             'STICKYAD_TYPE'         => $ad_type,
             'STICKYAD_URL'          => $ad_url,
             'STICKYAD_TITLE'        => $ad_data['title'],
