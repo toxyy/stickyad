@@ -195,8 +195,9 @@ class listener implements EventSubscriberInterface
             // cache this ad's data for seven days
             $this->cache->put($cache_id, $ad_data, 604800);
         }
+        $enable_adsense = false;
         $this->template->assign_vars([
-            'STICKYAD_SHOW'         => $show_ad,
+            'STICKYAD_SHOW'         => $show_ad || $enable_adsense,
             'STICKYAD_JAVASCRIPT'   => false,
             'STICKYAD_TYPE'         => $ad_type,
             'STICKYAD_URL'          => $ad_url,

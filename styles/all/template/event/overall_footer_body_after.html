@@ -6,8 +6,8 @@
     <label for="toxyystickyshowhide" id="toxyystickylabel" class="toxyystickyshowhidelink" style="font-weight: 900;">
         <a class="toxyyshowhidelink"></a>
     </label>
-    <{% if STICKYAD_URL %}a href="{{ STICKYAD_URL }}" class="toxyystickyurl" target="_blank" title=""{% else %}div{% endif %} class="toxyystickyurl">
-        {% if STICKYAD_URL %}
+    <{% if STICKYAD_TYPE != 'adsense' %}a href="{{ STICKYAD_URL }}" class="toxyystickyurl" target="_blank" title=""{% else %}div{% endif %} class="toxyystickyurl">
+        {% if STICKYAD_TYPE != 'adsense' %}
             <div id="toxyystickyadbox">
                 <span class="toxyyadmarker">Ad</span>
                 <img src="{{ STICKYAD_IMG_SRC }}" />
