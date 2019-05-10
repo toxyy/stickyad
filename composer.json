@@ -24,7 +24,7 @@
 		"version-check": {
 			"host": "toxyy.github.io",
 			"directory": "/version",
-			"filename": "stickyad.json",
+			"filename": "sticky.json",
                         "ssl": 1
 		}
 	}
