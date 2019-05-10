@@ -19,8 +19,6 @@ Pairs well with scripts that automatically detect and morph URLs from these site
 
 ![alt text](https://i.snag.gy/wDr1xp.jpg)
 
-![alt text](https://i.snag.gy/KpCmIY.jpg)
-
 ## Quick Install
 
 You can install this on the latest release of phpBB 3.2 by following the steps below:

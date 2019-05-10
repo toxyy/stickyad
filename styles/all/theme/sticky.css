@@ -114,8 +114,9 @@
 }
 
 .toxyystickyshowhidelink a::before {
+    font-family: "FontAwesome";
     background-color: grey;
-    content: "\1F781";
+    content: "\f0d8";
     transition-property: none;
     border: 2px solid white;
     border-radius: 4px;

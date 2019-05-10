@@ -61,8 +61,7 @@ class listener implements EventSubscriberInterface
     {
         $post_ary = array_column($event['rowset'], 'post_text');
 
-        $ad_url = $ad_id = $title = $price = $img_src = $seller = $seller_feedback = $extra = '';
-        $ad_type = 'adsense';
+        $ad_url = $ad_type = $ad_id = $title = $price = $img_src = $seller = $seller_feedback = $extra = '';
         // search for an ebay listing in this thread's posts, get its id
         while (empty($ad_url))
         {
@@ -195,9 +194,8 @@ class listener implements EventSubscriberInterface
             // cache this ad's data for seven days
             $this->cache->put($cache_id, $ad_data, 604800);
         }
-        $enable_adsense = false;
         $this->template->assign_vars([
-            'STICKYAD_SHOW'         => $show_ad || $enable_adsense,
+            'STICKYAD_SHOW'         => $show_ad,
             'STICKYAD_JAVASCRIPT'   => false,
             'STICKYAD_TYPE'         => $ad_type,
             'STICKYAD_URL'          => $ad_url,
