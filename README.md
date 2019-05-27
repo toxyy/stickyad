@@ -1,4 +1,4 @@
-# PhpBB Extension - toxyy Sticky Ad v1.0.0
+# PhpBB Extension - toxyy Sticky Ad v1.0.2
 
 [Topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?f=456&t=2511156)
 
@@ -8,8 +8,14 @@ phpBB 3.2.5-RC1+ PHP 7+
 
 ## Features
 
-Adds a sticky ad on the bottom right (desktop) or bottom (mobile) of topic pages that an ebay/amazon/alibaba link is detected.
+Adds a sticky ad on the bottom right (desktop) or bottom (mobile) of topic pages that a certain link is detected.
 Pairs well with scripts that automatically detect and morph URLs from these sites so you can boost your ad revenue.
+
+Supports:
+* ebay
+* amazon
+* alibaba
+* aliexpress
 
 ## Screenshot
 
