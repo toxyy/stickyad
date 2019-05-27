@@ -74,7 +74,7 @@ class listener implements EventSubscriberInterface
                     $ad_url = "https://www.ebay.com/itm/$ad_id";
                 }
                 // amazon asin regex string from: https://gist.github.com/GreenFootballs/6731201fafc67ecc9322ccb4a7977018#file-amazon_regex-md
-                $regex = "~
+                $amazon_regex = "~
                             (?:(smile\.|www\.))?    # optionally starts with smile. or www.
                             ama?zo?n\.              # also allow shortened amzn.com URLs
                             (?:
@@ -110,7 +110,7 @@ class listener implements EventSubscriberInterface
                                 (?:[^\"\'\s]*)       # everything up to a quote or white space
                             )?                      # optional
                         ~isx";
-                if (preg_match($regex, $post, $match))
+                if (preg_match($amazon_regex, $post, $match))
                 {
                     $ad_type = 'amazon';
                     $ad_id = $match[2];
@@ -119,6 +119,12 @@ class listener implements EventSubscriberInterface
                 if (preg_match('~alibaba.com/product-detail/.*?.html~i', $post, $match))
                 {
                     $ad_type = 'alibaba';
+                    $ad_id = $match[0];
+                    $ad_url = "https://$ad_id";
+                }
+                if (preg_match('~aliexpress.com/item/.*?.html~i', $post, $match))
+                {
+                    $ad_type = 'aliexpress';
                     $ad_id = $match[0];
                     $ad_url = "https://$ad_id";
                 }
@@ -142,7 +148,7 @@ class listener implements EventSubscriberInterface
             ];
             $context = stream_context_create($opts);
             // optimal page sizes to parse these mobile sites, no wasted data loaded. Increase limits if there is missing data
-            $len = $ad_type == 'amazon' ? 700000 : ($ad_type == 'ebay' ? 100000 : /*alibaba*/ 70000);
+            $len = $ad_type == 'amazon' ? 700000 : ($ad_type == 'ebay' ? 100000 : ($ad_type == 'aliexpress' ? 2500000 : /*alibaba*/ 70000));
             $doc = new \DOMDocument;
             $doc->loadHTML(file_get_contents($ad_url,false, $context, 0, $len));
             $xpath = new \DOMXPath($doc);
@@ -186,6 +192,15 @@ class listener implements EventSubscriberInterface
                         'seller_feedback'   =>  "//img[@class='company-info-more-icon']/@alt",
                     ]);
                     $ad_data['price'] .= ' / Pieces';
+                    break;
+                case 'aliexpress':
+                    $ad_data = array_map($xquery, [
+                        'title'             =>  "//title",
+                        'price'             =>  "//p[@class='current-price bold']",
+                        'img_src'           =>  "//amp-carousel[@id='detail-carousel']/amp-img/@src",
+                        'seller'            =>  "//section[@class='ms-block']/div/h3/a[@class='flex-1']",
+                        'seller_feedback'   =>  "//ul[@class='store-summary flex justify-space-between']/li[@class='flex direction-column align-start']/span",
+                    ]);
                     break;
             }
             // add ellipsis if title is too long
