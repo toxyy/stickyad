@@ -3,7 +3,7 @@
 	"type": "phpbb-extension",
 	"description": "",
 	"homepage": "https://github.com/toxyy/stickyad",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"time": "2019-05-04",
 	"keywords": ["phpbb", "extension"],
 	"license": "GPL-2.0",

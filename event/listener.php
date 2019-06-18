@@ -67,11 +67,12 @@ class listener implements EventSubscriberInterface
         {
             foreach ($post_ary as $post)
             {
-                if (preg_match('~ebay.com/itm/.*?/(\d+)~i', $post, $match))
+                if (preg_match('~ebay\.com(?:/|(%2F))itm(?:(?:/|(%2F)).*)?(?:/|(%2F))(\d+)~i', $post, $match))
                 {
                     $ad_type = 'ebay';
-                    $ad_id = $match[1];
+                    $ad_id = $match[4];
                     $ad_url = "https://www.ebay.com/itm/$ad_id";
+                    break;
                 }
                 // amazon asin regex string from: https://gist.github.com/GreenFootballs/6731201fafc67ecc9322ccb4a7977018#file-amazon_regex-md
                 $amazon_regex = "~
@@ -115,18 +116,21 @@ class listener implements EventSubscriberInterface
                     $ad_type = 'amazon';
                     $ad_id = $match[2];
                     $ad_url = "https://amazon.com/dp/$ad_id";
+                    break;
                 }
                 if (preg_match('~alibaba.com/product-detail/.*?.html~i', $post, $match))
                 {
                     $ad_type = 'alibaba';
                     $ad_id = $match[0];
                     $ad_url = "https://$ad_id";
+                    break;
                 }
                 if (preg_match('~aliexpress.com/item/.*?.html~i', $post, $match))
                 {
                     $ad_type = 'aliexpress';
                     $ad_id = $match[0];
                     $ad_url = "https://$ad_id";
+                    break;
                 }
             }
 
@@ -135,6 +139,7 @@ class listener implements EventSubscriberInterface
         }
 
         $ad_data = [];
+        // initial empty values
         $ad_data['title'] = $ad_data['price'] = $ad_data['img_src'] = $ad_data['seller'] = $ad_data['seller_feedback'] = $ad_data['extra'] = '';
         $show_ad = !empty($ad_url);
         $cache_id = "_toxyystickyad$ad_id";
@@ -142,15 +147,43 @@ class listener implements EventSubscriberInterface
         {
             // request sites as a mobile user to save bandwidth
             $opts = [
-                'http'  =>  [
-                    'header'    =>  "User-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53\r\n"
+                'http'  =>  [//Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Mobile Safari/537.36
+                    'header'    =>  "follow_location: false;\r\nContent-Security-Policy: script-src 'none';\r\nUser-Agent:Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53\r\n",
                 ]
             ];
-            $context = stream_context_create($opts);
             // optimal page sizes to parse these mobile sites, no wasted data loaded. Increase limits if there is missing data
             $len = $ad_type == 'amazon' ? 700000 : ($ad_type == 'ebay' ? 100000 : ($ad_type == 'aliexpress' ? 2500000 : /*alibaba*/ 70000));
             $doc = new \DOMDocument;
-            $doc->loadHTML(file_get_contents($ad_url,false, $context, 0, $len));
+            $context = stream_context_create($opts);
+            $html = file_get_contents($ad_url,false, $context, 0, $len);
+
+            if($ad_type === 'ebay')
+            {
+                $ad_expired = false;
+                // unique response in the header array for non expired ads
+                $match_length = strlen('Content-Length');
+                foreach ($http_response_header as $key => $response)
+                {
+                    if(substr($response, 0, $match_length) === 'Content-Length')
+                    {
+                        $content_length = explode(': ', $response)[1];
+                        if ($content_length != 0)
+                        {
+                            $ad_expired = true;
+                            break;
+                        }
+                    }
+                }
+
+                if($ad_expired)
+                {
+                    preg_match('~ebay\.com(?:/|(%2F))(?:itm|p)(?:(?:/|(%2F)).*)?(?:/|(%2F))(\d+)~i', $html, $ad_url);
+                    $ad_url = "https://$ad_url[0]";
+                    $html = file_get_contents($ad_url,false, $context, 0, $len);
+                }
+            }
+
+            $doc->loadHTML($html);
             $xpath = new \DOMXPath($doc);
 
             // the upcoming switch calls this in array path, so I don't have to write 5+ wrappers for each query, for each site
@@ -162,13 +195,21 @@ class listener implements EventSubscriberInterface
             {
                 case 'ebay':
                     $ad_data = array_map($xquery, [
-                        'title'             =>  "//*[@class='vi-title__main' or @class='vi-product__main']",
-                        'price'             =>  "//span[@class='vi-bin-primary-price__main-price']",
+                        'title'             =>  "//*[@class='vi-title__main' or @class='vi-product__main' or @class='product-title']",
+                        'price'             =>  "//*[@class='vi-bin-primary-price__main-price' or @class='display-price']",
                         'img_src'           =>  "//img[@class='vi-image-gallery__image vi-image-gallery__image--absolute-center']/@data-src",
                         'seller'            =>  "//span[@class='app-sellerpresence__sellername']",
                         'seller_feedback'   =>  "//span[@class='app-sellerpresence__feedbackpercentage']",
                         //'extra'             =>  '',
                     ]);
+
+                    if($ad_data['seller'] === null && $ad_data['seller_feedback'] === null) {
+                        $patch_data = array_map($xquery, [
+                            'seller'            =>  "//div[@class='seller-persona ']/span/a",
+                            'seller_feedback'   =>  "//div[@class='seller-persona ']/descendant::span[@class='no-wrap'][2]",
+                        ]);
+                        $ad_data = $patch_data + $ad_data;
+                    }
                     break;
                 case 'amazon':
                     $ad_data = array_map($xquery, [

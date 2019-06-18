@@ -1,4 +1,4 @@
-# PhpBB Extension - toxyy Sticky Ad v1.0.2
+# PhpBB Extension - toxyy Sticky Ad v1.0.3
 
 [Topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?f=456&t=2511156)
 
